@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Certly — Verifiable certificates from one API call</title>
-<meta name="description" content="Issue branded certificate PDFs with a hosted verification page and a unique ID, from a single API call. Pay per certificate, no monthly platform.">
+<meta name="description" content="Issue branded certificate PDFs with a hosted verification page and a unique ID, from a single API call. Start free, pay per certificate, or subscribe.">
 <style>
   :root{--ink:#111725;--muted:#57607a;--faint:#8891a6;--line:#e7e9f2;--bg:#ffffff;--soft:#f6f7fb;--brand:#4f46e5;--brandd:#4338ca;--go:#12885a;--code:#0f1630}
   *{box-sizing:border-box}
@@ -17,12 +17,11 @@
   .btn{display:inline-block;background:var(--brand);color:#fff;padding:10px 16px;border-radius:9px;font-weight:700;font-size:14px;text-decoration:none;border:none;cursor:pointer}
   .btn:hover{background:var(--brandd)}
   .hero{padding:52px 0 20px;text-align:center}
-  .badge{display:inline-block;background:#eef0fe;color:var(--brand);font-weight:700;font-size:12px;padding:5px 11px;border-radius:999px;letter-spacing:.3px}
+  .badge{display:inline-block;background:#e7f6ee;color:var(--go);font-weight:700;font-size:12px;padding:5px 11px;border-radius:999px;letter-spacing:.3px}
   h1{font-size:42px;line-height:1.1;letter-spacing:-1px;margin:16px 0 12px}
   h1 span{color:var(--brand)}
   .lead{font-size:18px;color:var(--muted);max-width:640px;margin:0 auto 24px}
-  .cta{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;max-width:460px;margin:0 auto}
-  .cta input{flex:1;min-width:220px;padding:12px 14px;border:1px solid var(--line);border-radius:9px;font-size:15px}
+  .cta{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
   .micro{font-size:12.5px;color:var(--faint);margin-top:10px}
   section{padding:34px 0;border-top:1px solid var(--line)}
   h2{font-size:13px;text-transform:uppercase;letter-spacing:1.1px;color:var(--faint);font-weight:700;margin:0 0 18px;text-align:center}
@@ -32,7 +31,7 @@
   .step b{display:block;margin-bottom:3px}
   .step p{margin:0;font-size:13.5px;color:var(--muted)}
   pre{background:var(--code);color:#e6e9f5;border-radius:12px;padding:16px 18px;overflow:auto;font-size:13px;line-height:1.5}
-  pre .k{color:#8ab4ff}.pre .s{color:#a6e3a1}
+  pre .k{color:#8ab4ff}
   .cmp{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
   .col{border:1px solid var(--line);border-radius:12px;padding:15px}
   .col.us{border:2px solid var(--brand)}
@@ -52,18 +51,17 @@
 <div class="wrap">
   <nav>
     <div class="logo">Cert<span>ly</span></div>
-    <div><a href="#how">How it works</a><a href="#pricing">Pricing</a><a class="btn" href="#get" style="color:#fff">Get API key</a></div>
+    <div><a href="#how">How it works</a><a href="#pricing">Pricing</a><a class="btn" href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates" style="color:#fff">Get API key</a></div>
   </nav>
 
   <header class="hero">
-    <span class="badge">EARLY ACCESS</span>
+    <span class="badge">LIVE ON RAPIDAPI</span>
     <h1>Verifiable certificates,<br>from <span>one API call</span>.</h1>
-    <p class="lead">Issue a branded certificate PDF with a hosted verification page and a unique ID. Built for training providers, bootcamps, associations, and events. Pay per certificate, or subscribe for less. No €75/mo platform.</p>
-    <form id="get" class="cta" action="https://formspree.io/f/mpqgylew" method="POST">
-      <input type="email" name="email" placeholder="you@company.com" required>
-      <button class="btn" type="submit">Get early access</button>
-    </form>
-    <div class="micro">Join the beta list. We will send your API key and beta pricing when it opens. No spam.</div>
+    <p class="lead">Issue a branded certificate PDF with a hosted verification page and a unique ID. Built for training providers, bootcamps, associations, and events. Pay per certificate, or subscribe for less.</p>
+    <div class="cta">
+      <a class="btn" href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates">Get your API key &rarr;</a>
+    </div>
+    <div class="micro">Start free, 5 certificates a month. Then pay $0.95 per certificate, or subscribe.</div>
   </header>
 
   <section id="how">
@@ -79,14 +77,12 @@
     <h2>Connect it once, then it runs itself</h2>
     <p style="text-align:center;color:var(--muted);font-size:14px;margin:-6px auto 16px;max-width:650px">Developers call the API directly. No-code teams connect it in Make, Zapier, or Bubble in a few clicks. Once it is wired to your course, event, or training tool, every certificate is issued automatically. No one runs anything by hand.</p>
     <pre><span class="k">curl</span> -X POST https://certly-api-h15r.onrender.com/v1/certificates \
-  -H "Authorization: Bearer YOUR_KEY" \
+  -H "X-RapidAPI-Key: YOUR_KEY" \
   -d '{
-    "template": "completion",
-    "data": { "name": "Jane Doe", "course": "Data Safety 101", "date": "2026-06-30" },
-    "options": { "qr": true }
+    "data": { "name": "Jane Doe", "title": "Data Safety 101", "date": "2026-06-30", "issuer": "Acme Training" }
   }'
 
-<span class="k">→</span> { "pdf_url": "...", "verify_url": "https://certly.dev/v/abc123", "credential_id": "abc123" }</pre>
+<span class="k">&rarr;</span> { "credential_id": "...", "verify_url": "https://.../v1/verify/...", "pdf_base64": "..." }</pre>
     <p style="text-align:center;color:var(--faint);font-size:12.5px;margin-top:12px">No code? Connect Certly in Make or Zapier, no developer needed.</p>
   </section>
 
@@ -95,25 +91,25 @@
     <div class="cmp">
       <div class="col"><h3>Raw PDF APIs</h3><p>Render a file, but you build the verification, IDs, and QR yourself.</p></div>
       <div class="col us"><h3>Certly</h3><p>Verification page, unique IDs, and QR are built in. One call. Cheap per certificate.</p></div>
-      <div class="col"><h3>Cert platforms</h3><p>Full dashboards priced per recipient (~€75/mo for 50). Overkill for an API workflow.</p></div>
+      <div class="col"><h3>Cert platforms</h3><p>Full dashboards priced per recipient (~$75/mo for 50). Overkill for an API workflow.</p></div>
     </div>
   </section>
 
   <section id="pricing">
     <h2>Simple pricing</h2>
-    <p style="text-align:center;color:var(--muted);font-size:14px;margin:-6px auto 14px">Your first certificate is free to try.</p>
+    <p style="text-align:center;color:var(--muted);font-size:14px;margin:-6px auto 14px">Start free, no card. Then pay as you go, or subscribe for less.</p>
     <div style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;background:#eef0fe;border:1px solid #d7dafe;border-radius:12px;padding:12px 18px;margin:0 auto 8px;max-width:640px">
-      <div style="font-size:15px">Pay as you go: <b style="color:var(--brand)">€0.90 / certificate</b>, no monthly fee.</div>
-      <a class="btn" href="#get" style="color:#fff">Start pay as you go</a>
+      <div style="font-size:15px">Pay as you go: <b style="color:var(--brand)">$0.95 / certificate</b>, no monthly fee.</div>
+      <a class="btn" href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates" style="color:#fff">Start pay as you go</a>
     </div>
     <p style="text-align:center;color:var(--muted);font-size:13.5px;margin:10px 0 14px">Or subscribe and pay far less per certificate:</p>
     <div class="price">
-      <div class="tier"><b>Starter</b><div class="p">€1.90<span style="font-size:13px;color:var(--faint);font-weight:400">/mo</span></div><div class="u">up to 10 certificates / mo</div><div class="d">Solo & occasional</div><a href="#get" style="display:inline-block;margin-top:8px;font-size:13px;font-weight:700;color:var(--brand);text-decoration:none">Get started →</a></div>
-      <div class="tier pop"><b>Pro</b><div class="p">€29<span style="font-size:13px;color:var(--faint);font-weight:400">/mo</span></div><div class="u">up to 2,000 certificates / mo</div><div class="d">Most teams</div><a href="#get" style="display:inline-block;margin-top:8px;font-size:13px;font-weight:700;color:var(--brand);text-decoration:none">Get started →</a></div>
-      <div class="tier"><b>Max</b><div class="p">€79<span style="font-size:13px;color:var(--faint);font-weight:400">/mo</span></div><div class="u">up to 20,000 certificates / mo</div><div class="d">High volume</div><a href="#get" style="display:inline-block;margin-top:8px;font-size:13px;font-weight:700;color:var(--brand);text-decoration:none">Get started →</a></div>
-      <div class="tier" style="border-color:#f0cdbf;background:#fdf0ec"><b style="color:#8a3a1e">Per-recipient platforms</b><div class="p" style="color:#a01f17">€75+<span style="font-size:13px;color:#b06a52;font-weight:400">/mo</span></div><div class="u" style="color:#8a3a1e">only ~50 recipients / mo</div><div class="d" style="color:#b06a52">the old way</div></div>
+      <div class="tier"><b>Free</b><div class="p">$0<span style="font-size:13px;color:var(--faint);font-weight:400">/mo</span></div><div class="u">5 certificates / mo, no card</div><div class="d">To try it</div><a href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates" style="display:inline-block;margin-top:8px;font-size:13px;font-weight:700;color:var(--brand);text-decoration:none">Start free &rarr;</a></div>
+      <div class="tier pop"><b>Pro</b><div class="p">$25<span style="font-size:13px;color:var(--faint);font-weight:400">/mo</span></div><div class="u">up to 2,000 certificates / mo</div><div class="d">Most teams</div><a href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates" style="display:inline-block;margin-top:8px;font-size:13px;font-weight:700;color:var(--brand);text-decoration:none">Get started &rarr;</a></div>
+      <div class="tier"><b>Max</b><div class="p">$75<span style="font-size:13px;color:var(--faint);font-weight:400">/mo</span></div><div class="u">up to 20,000 certificates / mo</div><div class="d">High volume</div><a href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates" style="display:inline-block;margin-top:8px;font-size:13px;font-weight:700;color:var(--brand);text-decoration:none">Get started &rarr;</a></div>
+      <div class="tier" style="border-color:#f0cdbf;background:#fdf0ec"><b style="color:#8a3a1e">Per-recipient platforms</b><div class="p" style="color:#a01f17">$75+<span style="font-size:13px;color:#b06a52;font-weight:400">/mo</span></div><div class="u" style="color:#8a3a1e">only ~50 recipients / mo</div><div class="d" style="color:#b06a52">the old way</div></div>
     </div>
-    <p style="text-align:center;color:var(--muted);font-size:13px;margin-top:14px">Cancel anytime, no fees.</p>
+    <p style="text-align:center;color:var(--muted);font-size:13px;margin-top:14px">Cancel anytime, no fees. Billing handled by RapidAPI.</p>
   </section>
 
   <section>
@@ -121,21 +117,20 @@
     <div class="faq">
       <div class="qa"><b>Do you store recipient data?</b><p>No. Verification uses a signed ID, so we keep no personal data. Your certificates, your data.</p></div>
       <div class="qa"><b>Can I use my own design?</b><p>Yes. Use a built-in template or send your own HTML. Colours, logo, layout are yours.</p></div>
-      <div class="qa"><b>How do people verify a certificate?</b><p>Every certificate has a QR and a hosted link. Anyone can confirm it is authentic and unrevoked.</p></div>
+      <div class="qa"><b>How do people verify a certificate?</b><p>Every certificate has a QR and a hosted link. Anyone can confirm it is authentic.</p></div>
       <div class="qa"><b>Does it work with no-code?</b><p>Yes. Call it from Make, Zapier, or Bubble when a learner completes a course or attends an event.</p></div>
     </div>
   </section>
 
   <section style="text-align:center">
-    <h2 style="margin-bottom:10px">Get your API key at launch</h2>
-    <form class="cta" action="https://formspree.io/f/mpqgylew" method="POST" style="margin-top:6px">
-      <input type="email" name="email" placeholder="you@company.com" required>
-      <button class="btn" type="submit">Join the beta</button>
-    </form>
-    <div class="micro">Building now. Beta members get founder pricing.</div>
+    <h2 style="margin-bottom:10px">Get your API key</h2>
+    <div class="cta" style="margin-top:6px">
+      <a class="btn" href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates">Get started on RapidAPI &rarr;</a>
+    </div>
+    <div class="micro">Free to start, no card. Subscribe or cancel anytime.</div>
   </section>
 
-  <footer>Certly — verifiable certificates as an API. Beta. This is an early-access page. © 2026.</footer>
+  <footer>Certly — verifiable certificates as an API. &copy; 2026.</footer>
 </div>
 </body>
 </html>
