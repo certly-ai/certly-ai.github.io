@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Certly — Verifiable certificates from one API call</title>
-<meta name="description" content="Issue branded certificate PDFs with a hosted verification page and a unique ID, from a single API call. Start free, pay per certificate, or subscribe.">
+<title>Certly. Verifiable certificates from one API call</title>
+<meta name="description" content="Issue a branded certificate PDF plus a hosted verification page, QR, and a tamper-proof ID, from one API call. Priced by volume, not per recipient.">
 <style>
   :root{--ink:#111725;--muted:#57607a;--faint:#8891a6;--line:#e7e9f2;--bg:#ffffff;--soft:#f6f7fb;--brand:#4f46e5;--brandd:#4338ca;--go:#12885a;--code:#0f1630}
   *{box-sizing:border-box}
@@ -20,7 +20,7 @@
   .badge{display:inline-block;background:#e7f6ee;color:var(--go);font-weight:700;font-size:12px;padding:5px 11px;border-radius:999px;letter-spacing:.3px}
   h1{font-size:42px;line-height:1.1;letter-spacing:-1px;margin:16px 0 12px}
   h1 span{color:var(--brand)}
-  .lead{font-size:18px;color:var(--muted);max-width:640px;margin:0 auto 24px}
+  .lead{font-size:18px;color:var(--muted);max-width:660px;margin:0 auto 24px}
   .cta{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
   .micro{font-size:12.5px;color:var(--faint);margin-top:10px}
   section{padding:34px 0;border-top:1px solid var(--line)}
@@ -44,7 +44,7 @@
   .qa{border-bottom:1px solid var(--line);padding:12px 0}
   .qa b{display:block;margin-bottom:3px}.qa p{margin:0;font-size:13.5px;color:var(--muted)}
   footer{padding:28px 0;color:var(--faint);font-size:12.5px;text-align:center;border-top:1px solid var(--line)}
-  @media(max-width:720px){h1{font-size:32px}.steps,.cmp,.price{grid-template-columns:1fr}}
+  @media(max-width:720px){h1{font-size:31px}.steps,.cmp,.price{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -56,31 +56,31 @@
 
   <header class="hero">
     <span class="badge">LIVE ON RAPIDAPI</span>
-    <h1>Verifiable certificates,<br>from <span>one API call</span>.</h1>
-    <p class="lead">Issue a branded certificate PDF with a hosted verification page and a unique ID. Built for training providers, bootcamps, associations, and events. Pay per certificate, or subscribe for less.</p>
+    <h1>Certificates your users<br>can <span>verify</span>. One API call.</h1>
+    <p class="lead">Most PDF APIs stop at the file. Certly returns a branded certificate plus a hosted verification page, a QR code, and a tamper-proof ID, in a single call. Priced by volume, not per recipient.</p>
     <div class="cta">
       <a class="btn" href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates">Get your API key &rarr;</a>
     </div>
-    <div class="micro">Start free, 5 certificates a month. Then pay $0.95 per certificate, or subscribe.</div>
+    <div class="micro">Start free, 5 certificates a month. Then $0.95 per certificate, or subscribe for less.</div>
   </header>
 
   <section id="how">
     <h2>How it works</h2>
     <div class="steps">
       <div class="step"><div class="n">1</div><b>Send the data</b><p>POST the recipient, course, and date to the API, with your template.</p></div>
-      <div class="step"><div class="n">2</div><b>Get the certificate</b><p>Receive a branded PDF, a unique credential ID, and a hosted verification link.</p></div>
-      <div class="step"><div class="n">3</div><b>Anyone can verify</b><p>The recipient shares the link or QR. Verifiers confirm it is authentic in one click.</p></div>
+      <div class="step"><div class="n">2</div><b>Get certificate plus proof</b><p>Receive a branded PDF, a tamper-proof credential ID, and a hosted verification link with a QR code.</p></div>
+      <div class="step"><div class="n">3</div><b>Anyone can verify</b><p>The recipient shares the link or scans the QR. Verifiers confirm it is authentic in one click, no login.</p></div>
     </div>
   </section>
 
   <section>
     <h2>Connect it once, then it runs itself</h2>
-    <p style="text-align:center;color:var(--muted);font-size:14px;margin:-6px auto 16px;max-width:650px">Developers call the API directly. No-code teams connect it in Make, Zapier, or Bubble in a few clicks. Once it is wired to your course, event, or training tool, every certificate is issued automatically. No one runs anything by hand.</p>
-    <pre><span class="k">curl</span> -X POST https://certly-api-h15r.onrender.com/v1/certificates \
+    <p style="text-align:center;color:var(--muted);font-size:14px;margin:-6px auto 16px;max-width:650px">Developers call the API directly. No-code teams connect it in Make, Zapier, or Bubble in a few clicks. Once it is wired to your course, event, or training tool, every certificate is issued and made verifiable automatically. No one runs anything by hand.</p>
+    <pre><span class="k">curl</span> -X POST https://certly-verifiable-certificates.p.rapidapi.com/v1/certificates \
   -H "X-RapidAPI-Key: YOUR_KEY" \
-  -d '{
-    "data": { "name": "Jane Doe", "title": "Data Safety 101", "date": "2026-06-30", "issuer": "Acme Training" }
-  }'
+  -H "X-RapidAPI-Host: certly-verifiable-certificates.p.rapidapi.com" \
+  -H "Content-Type: application/json" \
+  -d '{ "data": { "name": "Jane Doe", "title": "Data Safety 101", "date": "2026-06-30", "issuer": "Acme Training" } }'
 
 <span class="k">&rarr;</span> { "credential_id": "...", "verify_url": "https://.../v1/verify/...", "pdf_base64": "..." }</pre>
     <p style="text-align:center;color:var(--faint);font-size:12.5px;margin-top:12px">No code? Connect Certly in Make or Zapier, no developer needed.</p>
@@ -89,9 +89,9 @@
   <section>
     <h2>Why Certly</h2>
     <div class="cmp">
-      <div class="col"><h3>Raw PDF APIs</h3><p>Render a file, but you build the verification, IDs, and QR yourself.</p></div>
-      <div class="col us"><h3>Certly</h3><p>Verification page, unique IDs, and QR are built in. One call. Cheap per certificate.</p></div>
-      <div class="col"><h3>Cert platforms</h3><p>Full dashboards priced per recipient (~$75/mo for 50). Overkill for an API workflow.</p></div>
+      <div class="col"><h3>Raw PDF APIs</h3><p>Generate a file, then build the verification page, IDs, and QR yourself.</p></div>
+      <div class="col us"><h3>Certly</h3><p>File plus hosted verification, tamper-proof ID, and QR in one call. Priced by volume.</p></div>
+      <div class="col"><h3>Cert platforms</h3><p>Full dashboards, priced per recipient and sold by demo. Overkill to embed in your app.</p></div>
     </div>
   </section>
 
@@ -107,7 +107,7 @@
       <div class="tier"><b>Free</b><div class="p">$0<span style="font-size:13px;color:var(--faint);font-weight:400">/mo</span></div><div class="u">5 certificates / mo, no card</div><div class="d">To try it</div><a href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates" style="display:inline-block;margin-top:8px;font-size:13px;font-weight:700;color:var(--brand);text-decoration:none">Start free &rarr;</a></div>
       <div class="tier pop"><b>Pro</b><div class="p">$25<span style="font-size:13px;color:var(--faint);font-weight:400">/mo</span></div><div class="u">up to 2,000 certificates / mo</div><div class="d">Most teams</div><a href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates" style="display:inline-block;margin-top:8px;font-size:13px;font-weight:700;color:var(--brand);text-decoration:none">Get started &rarr;</a></div>
       <div class="tier"><b>Max</b><div class="p">$75<span style="font-size:13px;color:var(--faint);font-weight:400">/mo</span></div><div class="u">up to 20,000 certificates / mo</div><div class="d">High volume</div><a href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates" style="display:inline-block;margin-top:8px;font-size:13px;font-weight:700;color:var(--brand);text-decoration:none">Get started &rarr;</a></div>
-      <div class="tier" style="border-color:#f0cdbf;background:#fdf0ec"><b style="color:#8a3a1e">Per-recipient platforms</b><div class="p" style="color:#a01f17">$75+<span style="font-size:13px;color:#b06a52;font-weight:400">/mo</span></div><div class="u" style="color:#8a3a1e">only ~50 recipients / mo</div><div class="d" style="color:#b06a52">the old way</div></div>
+      <div class="tier" style="border-color:#f0cdbf;background:#fdf0ec"><b style="color:#8a3a1e">Per-recipient platforms</b><div class="p" style="color:#a01f17;font-size:18px">Per seat</div><div class="u" style="color:#8a3a1e">priced per recipient, sold by demo</div><div class="d" style="color:#b06a52">overkill to embed</div></div>
     </div>
     <p style="text-align:center;color:var(--muted);font-size:13px;margin-top:14px">Cancel anytime, no fees. Billing handled by RapidAPI.</p>
   </section>
@@ -115,9 +115,9 @@
   <section>
     <h2>FAQ</h2>
     <div class="faq">
-      <div class="qa"><b>Do you store recipient data?</b><p>No. Verification uses a signed ID, so we keep no personal data. Your certificates, your data.</p></div>
+      <div class="qa"><b>What makes a certificate verifiable?</b><p>Each one carries a tamper-proof signed ID and a hosted page. Change one character and verification fails. Anyone can confirm it in one click.</p></div>
+      <div class="qa"><b>Do you store recipient data?</b><p>No. Verification uses the signed ID, so we keep no personal data. Your certificates, your data.</p></div>
       <div class="qa"><b>Can I use my own design?</b><p>Yes. Use a built-in template or send your own HTML. Colours, logo, layout are yours.</p></div>
-      <div class="qa"><b>How do people verify a certificate?</b><p>Every certificate has a QR and a hosted link. Anyone can confirm it is authentic.</p></div>
       <div class="qa"><b>Does it work with no-code?</b><p>Yes. Call it from Make, Zapier, or Bubble when a learner completes a course or attends an event.</p></div>
     </div>
   </section>
@@ -130,7 +130,7 @@
     <div class="micro">Free to start, no card. Subscribe or cancel anytime.</div>
   </section>
 
-  <footer>Certly — verifiable certificates as an API. &copy; 2026.</footer>
+  <footer>Certly. Verifiable certificates as an API. &copy; 2026.</footer>
 </div>
 </body>
 </html>
