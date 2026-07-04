@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Etsy OAuth helper — CalcCraft ops</title>
+<style>
+  body{font-family:system-ui,sans-serif;max-width:640px;margin:40px auto;padding:0 16px;color:#222}
+  input,button{font-size:16px;padding:10px;margin:6px 0;width:100%;box-sizing:border-box}
+  button{background:#f1641e;color:#fff;border:0;border-radius:6px;cursor:pointer}
+  code{background:#f4f4f4;padding:2px 6px;border-radius:4px;word-break:break-all;display:block;margin:8px 0;font-size:13px}
+  .step{border:1px solid #ddd;border-radius:8px;padding:16px;margin:16px 0}
+  .ok{color:#0a7a2f;font-weight:600}
+</style>
+</head>
+<body>
+<h2>Etsy OAuth — one-time authorize (CalcCraft ops)</h2>
+<div id="start" class="step">
+  <p><b>Step 1.</b> Paste the app <b>keystring</b> (from etsy.com/developers → your app). It never leaves this browser.</p>
+  <input id="key" placeholder="Etsy keystring (client id)" autocomplete="off">
+  <p style="font-size:13px;color:#666">Before continuing: in the Etsy app settings, add this exact callback URL:<br><code id="cb"></code></p>
+  <button onclick="go()">Authorize with Etsy</button>
+</div>
+<div id="done" class="step" style="display:none">
+  <p class="ok">Code received. Final step below.</p>
+  <p><b>Auth code:</b></p><code id="code"></code>
+  <p><b>Verifier:</b></p><code id="ver"></code>
+  <p><b>Step 2.</b> Run the GitHub workflow <b>etsy</b> (portfolio-ops → Actions → etsy → Run workflow) with:</p>
+  <p>op = <code style="display:inline">oauth-exchange</code></p>
+  <p>args = </p><code id="args"></code>
+  <p style="font-size:13px;color:#666">The code expires in minutes — run it now. After a green run, Etsy autonomy is live.</p>
+</div>
+<script>
+const SCOPES = "listings_r listings_w listings_d shops_r shops_w transactions_r feedback_r";
+const REDIRECT = location.origin + location.pathname;
+document.getElementById("cb").textContent = REDIRECT;
+function b64url(buf){return btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");}
+async function go(){
+  const key = document.getElementById("key").value.trim();
+  if(!key){alert("keystring required");return;}
+  const rnd = new Uint8Array(32); crypto.getRandomValues(rnd);
+  const verifier = b64url(rnd.buffer);
+  const challenge = b64url(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(verifier)));
+  const state = b64url(crypto.getRandomValues(new Uint8Array(12)).buffer);
+  localStorage.setItem("etsy_verifier", verifier);
+  localStorage.setItem("etsy_state", state);
+  const u = new URL("https://www.etsy.com/oauth/connect");
+  u.search = new URLSearchParams({response_type:"code", redirect_uri:REDIRECT, scope:SCOPES,
+    client_id:key, state:state, code_challenge:challenge, code_challenge_method:"S256"});
+  location.href = u;
+}
+(function(){
+  const p = new URLSearchParams(location.search);
+  if(!p.get("code")) return;
+  if(p.get("state") !== localStorage.getItem("etsy_state")){alert("state mismatch — restart");return;}
+  document.getElementById("start").style.display = "none";
+  document.getElementById("done").style.display = "block";
+  const code = p.get("code"), ver = localStorage.getItem("etsy_verifier");
+  document.getElementById("code").textContent = code;
+  document.getElementById("ver").textContent = ver;
+  document.getElementById("args").textContent = JSON.stringify({code:code, verifier:ver});
+})();
+</script>
+</body>
+</html>
