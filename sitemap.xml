@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://certlyapi.com/</loc><lastmod>2026-07-03</lastmod></url>
+  <url><loc>https://certlyapi.com/</loc><lastmod>2026-07-06</lastmod></url>
+  <url><loc>https://certlyapi.com/demo/</loc><lastmod>2026-07-06</lastmod></url>
+  <url><loc>https://certlyapi.com/guides/</loc><lastmod>2026-07-06</lastmod></url>
+  <url><loc>https://certlyapi.com/guides/verifiable-certificate-api.html</loc><lastmod>2026-07-06</lastmod></url>
+  <url><loc>https://certlyapi.com/guides/zapier-issue-certificates.html</loc><lastmod>2026-07-06</lastmod></url>
+  <url><loc>https://certlyapi.com/guides/teachable-verifiable-certificates.html</loc><lastmod>2026-07-06</lastmod></url>
+  <url><loc>https://certlyapi.com/guides/thinkific-verifiable-certificates.html</loc><lastmod>2026-07-06</lastmod></url>
 </urlset>
