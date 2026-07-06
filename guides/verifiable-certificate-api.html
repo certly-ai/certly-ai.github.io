@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verifiable certificate API: how it works and when you need one | Certly</title>
+<meta name="description" content="What a verifiable certificate API does, how issuing and verification work, and when to use one instead of a plain PDF or a per-seat platform.">
+<link rel="canonical" href="https://certlyapi.com/guides/verifiable-certificate-api.html">
+<meta property="og:title" content="Verifiable certificate API: how it works and when you need one">
+<meta property="og:description" content="What a verifiable certificate API does, how issuing and verification work, and when to use one instead of a plain PDF or a per-seat platform.">
+<meta property="og:url" content="https://certlyapi.com/guides/verifiable-certificate-api.html">
+<style>
+:root{--ink:#111725;--muted:#57607a;--faint:#8891a6;--line:#e7e9f2;--bg:#fff;--soft:#f6f7fb;--brand:#4f46e5;--brandd:#4338ca;--go:#12885a;--code:#0f1630}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+nav{display:flex;align-items:center;justify-content:space-between;padding:18px 0;border-bottom:1px solid var(--line)}
+.logo{font-weight:800;font-size:18px;letter-spacing:-.3px;text-decoration:none;color:var(--ink)}
+.logo span{color:var(--brand)}
+nav a.k{color:var(--muted);text-decoration:none;font-size:14px}
+.crumb{font-size:13px;color:var(--faint);margin:22px 0 6px}
+.crumb a{color:var(--muted);text-decoration:none}
+h1{font-size:32px;line-height:1.18;letter-spacing:-.5px;margin:6px 0 10px}
+.sub{font-size:18px;color:var(--muted);margin:0 0 22px}
+h2{font-size:21px;margin:30px 0 8px;letter-spacing:-.2px}
+h3{font-size:16px;margin:20px 0 6px}
+p{margin:10px 0}
+ul,ol{padding-left:22px}
+li{margin:6px 0}
+a{color:var(--brand)}
+.btn{display:inline-block;background:var(--brand);color:#fff;padding:11px 17px;border-radius:9px;font-weight:700;font-size:15px;text-decoration:none;margin:4px 6px 4px 0}
+.btn:hover{background:var(--brandd)}
+.btn.ghost{background:#fff;color:var(--brand);border:1.5px solid var(--brand)}
+pre{background:var(--code);color:#e6e9f5;border-radius:12px;padding:15px 17px;overflow:auto;font-size:13px;line-height:1.5}
+pre .k{color:#8ab4ff}
+.cta{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:20px;margin:26px 0;text-align:center}
+.cta b{display:block;font-size:17px;margin-bottom:8px}
+.note{background:#eef7f1;border:1px solid #cfe8d9;border-radius:10px;padding:12px 14px;font-size:14px;color:#2f5d47;margin:16px 0}
+.rel{border-top:1px solid var(--line);margin-top:34px;padding-top:16px;font-size:14px}
+.rel a{display:block;margin:6px 0}
+footer{padding:26px 0;color:var(--faint);font-size:12.5px;text-align:center;border-top:1px solid var(--line);margin-top:26px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav><a class="logo" href="/">Cert<span>ly</span></a><a class="k" href="/demo/">Live demo</a></nav>
+  <div class="crumb"><a href="/">Home</a> / <a href="/guides/">Guides</a> / Verifiable certificate API: how it works and when you need one</div>
+  <h1>Verifiable certificate API: how it works and when you need one</h1>
+
+  <p class="sub">A verifiable certificate API turns one HTTP call into a branded certificate that anyone can independently confirm is real. Here is exactly how it works, and when it is worth using instead of a plain PDF.</p>
+
+  <h2>Why a plain PDF certificate proves nothing</h2>
+  <p>Most tools that "issue certificates" just generate a PDF. A PDF can be edited in a minute, forwarded by anyone, or produced by someone who never took your course. There is no way for a third party to check it. So the certificate carries no real weight, which is a problem if people are paying for the credential.</p>
+
+  <h2>What the API actually returns</h2>
+  <p>You send the recipient, the course or title, the date, and your issuer name. You get back three things:</p>
+  <ul>
+    <li>A branded <strong>certificate PDF</strong> with a QR code.</li>
+    <li>A tamper-evident <strong>credential ID</strong> (signed, so any change breaks it).</li>
+    <li>A hosted <strong>verification URL</strong> that shows who earned it, what for, when, and whether it is valid.</li>
+  </ul>
+  <pre><span class="k">POST</span> https://certly-verifiable-certificates.p.rapidapi.com/v1/certificates
+{ "data": { "name": "Jane Doe", "title": "Advanced Copywriting",
+            "date": "2026-06-30", "issuer": "Your Academy" } }
+
+<span class="k">&rarr;</span> { "credential_id": "...", "verify_url": "https://.../v1/verify/...",
+    "pdf_base64": "..." }</pre>
+  <h2>How verification works</h2>
+  <p>The verify page is public and needs no login. It confirms the certificate against the signed ID, so a forged or altered certificate fails immediately. No personal data has to be stored to verify: the proof travels in the signed ID itself.</p>
+
+  <h2>When you need one</h2>
+  <ul>
+    <li>Online courses and cohort programs where the certificate is part of what people buy.</li>
+    <li>Professional training, CE credits, and compliance where an employer or auditor must confirm completion.</li>
+    <li>Memberships, event attendance, and bootcamps that issue credentials at volume.</li>
+  </ul>
+
+  <h2>API vs the alternatives</h2>
+  <p>Raw PDF-generation APIs stop at the file: you would have to build the verification page, IDs, and QR yourself. Per-recipient platforms (the Accredible or Credly class) do verification but are priced per seat and sold by demo, which is overkill to embed in your own product. A verifiable certificate API gives you the file plus the verification in one call, priced by volume.</p>
+
+  <h2>No code needed</h2>
+  <p>You do not have to be a developer. Call it from Zapier, Make, or n8n when a learner finishes a course, and the whole flow runs itself. See the platform guides linked below for step by step setups.</p>
+
+  <div class="cta">
+    <b>See it work in 10 seconds</b>
+    <p style="color:var(--muted);font-size:14px;margin:0 0 12px">Issue a real sample certificate and open its live verification page. No signup, no card.</p>
+    <a class="btn" href="/demo/">Try the live demo &rarr;</a>
+    <a class="btn ghost" href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates">Get your API key</a>
+  </div>
+  <div class="rel"><b>Related guides</b><a href="/guides/zapier-issue-certificates.html">Issue certificates automatically with Zapier</a><a href="/guides/teachable-verifiable-certificates.html">Add verifiable certificates to Teachable</a><a href="/guides/thinkific-verifiable-certificates.html">Add verifiable certificates to Thinkific</a></div>
+  <footer>Certly. Verifiable certificates as an API. &middot; <a href="/">certlyapi.com</a> &middot; contact@certlyapi.com</footer>
+</div>
+</body>
+</html>
