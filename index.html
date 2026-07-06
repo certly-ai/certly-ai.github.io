@@ -16,6 +16,8 @@
   nav a{color:var(--muted);text-decoration:none;font-size:14px;margin-left:18px}
   .btn{display:inline-block;background:var(--brand);color:#fff;padding:10px 16px;border-radius:9px;font-weight:700;font-size:14px;text-decoration:none;border:none;cursor:pointer}
   .btn:hover{background:var(--brandd)}
+  .btn.ghost{background:#fff;color:var(--brand);border:1.5px solid var(--brand)}
+  .btn.ghost:hover{background:var(--soft)}
   .hero{padding:52px 0 20px;text-align:center}
   .badge{display:inline-block;background:#e7f6ee;color:var(--go);font-weight:700;font-size:12px;padding:5px 11px;border-radius:999px;letter-spacing:.3px}
   h1{font-size:42px;line-height:1.1;letter-spacing:-1px;margin:16px 0 12px}
@@ -51,7 +53,7 @@
 <div class="wrap">
   <nav>
     <div class="logo">Cert<span>ly</span></div>
-    <div><a href="#how">How it works</a><a href="#pricing">Pricing</a><a class="btn" href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates" style="color:#fff">Get API key</a></div>
+    <div><a href="#how">How it works</a><a href="/demo/">Live demo</a><a href="#pricing">Pricing</a><a class="btn" href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates" style="color:#fff">Get API key</a></div>
   </nav>
 
   <header class="hero">
@@ -59,9 +61,10 @@
     <h1>Certificates your users<br>can <span>verify</span>. One API call.</h1>
     <p class="lead">Most PDF APIs stop at the file. Certly returns a branded certificate plus a hosted verification page, a QR code, and a tamper-proof ID, in a single call. Priced by volume, not per recipient.</p>
     <div class="cta">
-      <a class="btn" href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates">Get your API key &rarr;</a>
+      <a class="btn" href="/demo/">Try the live demo &rarr;</a>
+      <a class="btn ghost" href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates">Get your API key</a>
     </div>
-    <div class="micro">Start free, 5 certificates a month. Then $0.95 per certificate, or subscribe for less.</div>
+    <div class="micro">Issue a real sample certificate in 10 seconds, no signup, no card. Then start free, 5 certificates a month.</div>
   </header>
 
   <section id="how">
@@ -71,6 +74,12 @@
       <div class="step"><div class="n">2</div><b>Get certificate plus proof</b><p>Receive a branded PDF, a tamper-proof credential ID, and a hosted verification link with a QR code.</p></div>
       <div class="step"><div class="n">3</div><b>Anyone can verify</b><p>The recipient shares the link or scans the QR. Verifiers confirm it is authentic in one click, no login.</p></div>
     </div>
+  </section>
+
+  <section id="demo">
+    <h2>See it work in 10 seconds</h2>
+    <p style="text-align:center;color:var(--muted);font-size:14px;margin:-6px auto 16px;max-width:640px">Issue a real sample certificate right now, no signup and no card. You get the PDF and its live verification page, exactly what the API returns. It is watermarked as a sample; real certificates look identical without it.</p>
+    <div class="cta"><a class="btn" href="/demo/">Try the live demo &rarr;</a></div>
   </section>
 
   <section>
@@ -123,11 +132,12 @@
   </section>
 
   <section style="text-align:center">
-    <h2 style="margin-bottom:10px">Get your API key</h2>
+    <h2 style="margin-bottom:10px">See it, then ship it</h2>
     <div class="cta" style="margin-top:6px">
-      <a class="btn" href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates">Get started on RapidAPI &rarr;</a>
+      <a class="btn" href="/demo/">Try the live demo</a>
+      <a class="btn ghost" href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates">Get started on RapidAPI &rarr;</a>
     </div>
-    <div class="micro">Free to start, no card. Subscribe or cancel anytime.</div>
+    <div class="micro">Demo needs no signup. Free to start, no card. Subscribe or cancel anytime.</div>
   </section>
 
   <footer>Certly. Verifiable certificates as an API. &copy; 2026. &middot; contact@certlyapi.com</footer>
