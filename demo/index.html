@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live demo — issue a verifiable certificate | Certly</title>
+<meta name="description" content="Issue a watermarked sample certificate and open its live verification page. No signup, no card. See exactly what the Certly API returns.">
+<link rel="canonical" href="https://certlyapi.com/demo/">
+<style>
+  :root { --ink:#111725; --muted:#57607a; --accent:#4f45e6; --accent-dark:#3d35c4; --bg:#f7f8fc; --ok:#12885a; --warn:#8a5a12; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",sans-serif; color:var(--ink); background:var(--bg); }
+  .wrap { max-width:640px; margin:0 auto; padding:32px 20px 64px; }
+  .top { display:flex; align-items:center; gap:10px; margin-bottom:36px; }
+  .mark { width:28px; height:28px; border-radius:8px; background:linear-gradient(135deg,#4f45e6,#7a6cff); display:inline-flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:15px; }
+  .top a { color:var(--ink); text-decoration:none; font-weight:700; }
+  .top .back { margin-left:auto; font-size:14px; color:var(--accent); font-weight:600; }
+  h1 { font-size:30px; line-height:1.15; margin:0 0 10px; }
+  .sub { color:var(--muted); font-size:16px; margin:0 0 28px; }
+  .card { background:#fff; border:1px solid #e7e9f2; border-radius:16px; padding:24px; box-shadow:0 1px 3px rgba(17,23,37,.04); }
+  label { display:block; font-size:13px; font-weight:700; margin:14px 0 6px; }
+  input { width:100%; padding:11px 12px; font-size:15px; border:1px solid #d5d9e6; border-radius:10px; background:#fff; color:var(--ink); }
+  input:focus { outline:2px solid var(--accent); border-color:var(--accent); }
+  button { margin-top:18px; width:100%; padding:13px; font-size:16px; font-weight:700; color:#fff; background:var(--accent); border:0; border-radius:10px; cursor:pointer; }
+  button:hover { background:var(--accent-dark); }
+  button:disabled { background:#a9a4ef; cursor:wait; }
+  .status { margin-top:14px; font-size:14px; color:var(--muted); min-height:20px; }
+  .result { display:none; margin-top:18px; border:1px solid #cfe8d9; background:#eef7f1; border-radius:12px; padding:18px; }
+  .result h2 { margin:0 0 8px; font-size:16px; color:var(--ok); }
+  .result a { display:inline-block; margin:8px 12px 0 0; font-weight:700; color:var(--accent); }
+  .note { margin-top:22px; font-size:13px; color:var(--muted); line-height:1.55; }
+  .note strong { color:var(--ink); }
+  .err { color:#b3261e; }
+  .cta { margin-top:26px; text-align:center; font-size:15px; }
+  .cta a { color:var(--accent); font-weight:700; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <span class="mark">&#10003;</span><a href="https://certlyapi.com">Certly</a>
+    <a class="back" href="https://certlyapi.com">&larr; back to certlyapi.com</a>
+  </div>
+
+  <h1>Issue a sample certificate.<br>Watch it verify.</h1>
+  <p class="sub">No signup, no card. You get a real PDF with a QR code and a live verification page — exactly what the API returns, watermarked as a sample.</p>
+
+  <div class="card">
+    <form id="f">
+      <label for="name">Recipient name</label>
+      <input id="name" maxlength="60" placeholder="Marie Dupont" autocomplete="off">
+      <label for="course">Course or program</label>
+      <input id="course" maxlength="80" placeholder="Advanced Sourdough Baking" autocomplete="off">
+      <button id="go" type="submit">Issue sample certificate</button>
+    </form>
+    <div class="status" id="status"></div>
+    <div class="result" id="result">
+      <h2>&#10003; Certificate issued</h2>
+      <a id="dl" download="certly-sample-certificate.pdf">Download the PDF</a>
+      <a id="vf" target="_blank" rel="noopener">Open the live verify page &rarr;</a>
+    </div>
+  </div>
+
+  <p class="note"><strong>What just happened?</strong> One POST request. The API returned a PDF (with an embedded QR code) and a hosted verification page showing who earned it, what for, when, and whether it is still valid. Sample certificates are watermarked and demo issuance is limited per day. Real certificates look identical, without the watermark.</p>
+
+  <p class="cta">Ready for real ones? <a href="https://rapidapi.com/certlyapplive/api/certly-verifiable-certificates">Free tier: 5 certificates/month, no card &rarr;</a></p>
+</div>
+
+<script>
+(function () {
+  var API = 'https://certly-api-h15r.onrender.com/free/issue';
+  var f = document.getElementById('f'), go = document.getElementById('go'),
+      st = document.getElementById('status'), res = document.getElementById('result');
+
+  function issue(retry) {
+    var name = document.getElementById('name').value.trim();
+    var course = document.getElementById('course').value.trim();
+    go.disabled = true; res.style.display = 'none';
+    st.className = 'status';
+    st.textContent = retry ? 'Still waking the demo server - retrying...' : 'Issuing... (first call of the day can take ~1 minute while the demo server wakes up)';
+    var ctrl = new AbortController();
+    var t = setTimeout(function () { ctrl.abort(); }, 90000);
+    fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: name, course: course }),
+      signal: ctrl.signal
+    }).then(function (r) {
+      clearTimeout(t);
+      if (r.status === 429) { throw { demo_limit: true }; }
+      if (!r.ok) { throw new Error('http ' + r.status); }
+      return r.json();
+    }).then(function (d) {
+      go.disabled = false; st.textContent = '';
+      document.getElementById('dl').href = 'data:application/pdf;base64,' + d.pdf_base64;
+      document.getElementById('vf').href = d.verify_url;
+      res.style.display = 'block';
+    }).catch(function (e) {
+      clearTimeout(t);
+      go.disabled = false;
+      if (e && e.demo_limit) {
+        st.className = 'status err';
+        st.textContent = 'Demo limit reached for today. The API free tier (5 certs/month, no card) has no such limit.';
+      } else if (!retry) {
+        issue(true);
+      } else {
+        st.className = 'status err';
+        st.textContent = 'The demo server did not answer. Please try again in a minute.';
+      }
+    });
+  }
+  f.addEventListener('submit', function (e) { e.preventDefault(); issue(false); });
+})();
+</script>
+</body>
+</html>
